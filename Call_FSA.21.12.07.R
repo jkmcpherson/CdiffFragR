@@ -84,7 +84,9 @@ for(i in 1 : nrow(results)){
 
 }
 
-results$query_file <- p1
+p1_names <- gsub("Files_to_analyze/", "", p1)
+
+results$query_file <- p1_names
 results$Confidence[results$Dist_1 < 0.1] <- "good match"
 results$Confidence[results$Dist_1 >=  0.1] <- "questionable match"
 results$Confidence[results$Dist_1 >=  0.2] <- "poor match"
@@ -94,7 +96,10 @@ print("Success!")
 
 zip(zipfile = paste0("Results", Sys.Date(), ".zip"), files = results.dir)
 
-
-
+#iteratively build file results_collated
+results_collated <- read.csv("Results_Collated.csv")
+results_collated_export <- rbind(results_collated[,-1], results)
+write.csv(results_collated_export, "Results_Collated.csv")
+print("Results collated!")
 
 
